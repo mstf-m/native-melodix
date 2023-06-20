@@ -1,7 +1,7 @@
 import { StyleSheet, View, FlatList, Image } from "react-native";
 import Screen from "../components/Screen";
 import colors from "../config/colors";
-import SvgComponent from "../assets/SVGs/mainLogo";
+import MainLogo from "../assets/SVGs/MainLogo";
 import FeaturedList from "../components/FeaturedList";
 import ChartCard from "../components/cards/ChartCard";
 import SongCart from "../components/cards/SongCard";
@@ -83,10 +83,7 @@ export default function HomeScreen() {
         keyExtractor={(item, index) => index.toString()}
         renderItem={() => (
           <>
-            <SvgComponent
-              color={colors.primary}
-              style={styles.logo}
-            ></SvgComponent>
+            <MainLogo color={colors.primary} style={styles.logo}></MainLogo>
             <Image
               style={styles.mainPic}
               source={require("../assets/images/img1.png")}

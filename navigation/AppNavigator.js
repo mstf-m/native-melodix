@@ -4,11 +4,11 @@ import TrendingNavigator from "./TrendingNavigator";
 import SearchNavigator from "./SearchNavigator";
 import ProfileNavigator from "./ProfileNavigator";
 
-import HomeSvg from "../assets/SVGs/home";
-import PalaylistSvg from "../assets/SVGs/playlist";
-import DiscSvg from "../assets/SVGs/disc";
-import SearchSvg from "../assets/SVGs/search";
-import ProfileSvg from "../assets/SVGs/profile";
+import HomeSvg from "../assets/SVGs/Home";
+import PalaylistSvg from "../assets/SVGs/Playlist";
+import DiscSvg from "../assets/SVGs/Disc";
+import SearchSvg from "../assets/SVGs/Search";
+import ProfileSvg from "../assets/SVGs/Profile";
 
 import colors from "../config/colors";
 import { Ionicons } from "@expo/vector-icons";

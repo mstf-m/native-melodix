@@ -1,5 +1,5 @@
 import Svg, { Path, G } from "react-native-svg";
-const SvgComponent = ({ color, ...otherProps }) => (
+const Profile = ({ color, ...otherProps }) => (
   <Svg
     xmlns="http://www.w3.org/2000/svg"
     width={22}
@@ -12,4 +12,4 @@ const SvgComponent = ({ color, ...otherProps }) => (
     </G>
   </Svg>
 );
-export default SvgComponent;
+export default Profile;

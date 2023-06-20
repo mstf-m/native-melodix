@@ -26,5 +26,6 @@ const styles = StyleSheet.create({
   subTitle: {
     marginBottom: 15,
     fontSize: 12,
+    color: colors.text500,
   },
 });

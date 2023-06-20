@@ -6,6 +6,7 @@ export default {
   secondary: "rgba(126, 47, 255, 0.8)",
   text900: "#ffffff",
   text500: "rgba(255, 255, 255, 0.5)",
+  button: "rgba(255, 255, 255, 0.07)",
   border: "rgba(255, 255, 255, 0.11)",
   // gradient: linear-gradient(
   //   90deg,

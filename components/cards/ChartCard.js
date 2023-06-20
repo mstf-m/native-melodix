@@ -1,10 +1,17 @@
 import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 import Text from "../Text";
 import colors from "../../config/colors";
+import { useNavigation } from "@react-navigation/native";
+import routes from "../../navigation/routes";
 
 export default function ChartCard({ data }) {
+  const navigation = useNavigation();
+
   return (
-    <TouchableOpacity style={styles.container}>
+    <TouchableOpacity
+      style={styles.container}
+      onPress={() => navigation.navigate(routes.CHART)}
+    >
       <View style={styles.group}>
         <View>
           <Image source={data.imageUri} style={styles.image}></Image>
@@ -35,10 +42,13 @@ const styles = StyleSheet.create({
   },
   title: {
     marginBottom: 5,
+    fontFamily: "Quicksand",
+    fontSize: 17,
   },
   subTitle: {
     marginBottom: 15,
     fontSize: 12,
+    color: colors.text500,
   },
   duration: {
     fontSize: 14,
