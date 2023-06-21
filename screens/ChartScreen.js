@@ -3,13 +3,14 @@ import Screen from "../components/Screen";
 import MainLogo from "../assets/SVGs/MainLogo";
 import colors from "../config/colors";
 import Text from "../components/Text";
-import GradientText from "../components/GradiantText";
+import GradientText from "../components/GradientText";
 import ChartButton from "../components/buttons/ChartButton";
 
 import PlayAll from "../assets/SVGs/PlayAll";
 import Playlist from "../assets/SVGs/Playlist";
 import Like from "../assets/SVGs/Like";
 import HorizontalCard from "../components/cards/HorizontalCard";
+import BackgraoundGradient from "../components/BackgraoundGradient";
 
 const data = {
   items: [
@@ -53,60 +54,65 @@ const data = {
 
 export default function ChartScreen() {
   return (
-    <Screen>
-      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-        <MainLogo color={colors.primary} style={styles.logo}></MainLogo>
-        <View style={styles.imageBox}>
-          <Image
-            source={require("../assets/images/Lead-image.png")}
-            style={styles.image}
-          ></Image>
-        </View>
+    <Screen style={styles.screen}>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <BackgraoundGradient>
+          <View style={styles.container}>
+            <MainLogo color={colors.primary} style={styles.logo}></MainLogo>
 
-        <GradientText style={styles.title}>Tomorrow’s tunes</GradientText>
-        <Text style={styles.discription}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam,
-          purus sit amet luctus venenatis
-        </Text>
-        <Text style={styles.details}>64 songs ~ 16 hrs+</Text>
+            <Image
+              source={require("../assets/images/Lead-image.png")}
+              style={styles.image}
+            ></Image>
 
-        <View style={styles.buttonBox}>
-          <ChartButton
-            title="Play all"
-            icon={<PlayAll color={colors.primary}></PlayAll>}
-          ></ChartButton>
-          <ChartButton
-            title="Add to collection"
-            icon={<Playlist color={colors.primary}></Playlist>}
-          ></ChartButton>
-          <ChartButton
-            title="Like"
-            icon={<Like color={colors.primary}></Like>}
-          ></ChartButton>
-        </View>
+            <GradientText style={styles.title}>Tomorrow’s tunes</GradientText>
+            <Text style={styles.discription}>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit ut
+              aliquam, purus sit amet luctus venenatis
+            </Text>
+            <Text style={styles.details}>64 songs ~ 16 hrs+</Text>
 
-        <View style={styles.musicsBox}>
-          {data.items.map((item) => (
-            <HorizontalCard id={item.id} data={item}></HorizontalCard>
-          ))}
-        </View>
+            <View style={styles.buttonBox}>
+              <ChartButton
+                title="Play all"
+                icon={<PlayAll color={colors.primary}></PlayAll>}
+              ></ChartButton>
+              <ChartButton
+                title="Add to collection"
+                icon={<Playlist color={colors.primary}></Playlist>}
+              ></ChartButton>
+              <ChartButton
+                title="Like"
+                icon={<Like color={colors.primary}></Like>}
+              ></ChartButton>
+            </View>
+
+            <View style={styles.musicsBox}>
+              {data.items.map((item) => (
+                <HorizontalCard key={item.id} data={item}></HorizontalCard>
+              ))}
+            </View>
+          </View>
+        </BackgraoundGradient>
       </ScrollView>
     </Screen>
   );
 }
 
 const styles = StyleSheet.create({
+  screen: {
+    marginHorizontal: 0,
+  },
   container: {
-    marginHorizontal: 5,
+    marginHorizontal: 20,
   },
   logo: {
     marginVertical: 15,
   },
-  imageBox: {
-    alignItems: "center",
-  },
   image: {
+    width: "100%",
     marginVertical: 20,
+    borderRadius: 20,
   },
   title: {
     fontFamily: "Designer",

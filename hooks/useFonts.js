@@ -14,9 +14,9 @@ export default function useFontLoader() {
     }
   }, [fontsLoaded]);
 
-  // if (!fontsLoaded) {
-  //   return null;
-  // }
+  if (!fontsLoaded) {
+    return null;
+  }
 
   return { fontsLoaded, hideSplashScreen };
 }
