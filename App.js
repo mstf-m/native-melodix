@@ -8,6 +8,7 @@ import AppNavigator from "./navigation/AppNavigator";
 import colors from "./config/colors";
 import { StatusBar } from "expo-status-bar";
 import Theme from "./navigation/Theme";
+import { ReduxProvider } from "./store/provider";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -28,12 +29,14 @@ export default function App() {
   }
 
   return (
-    <View style={styles.app} onLayout={hideSplashScreen}>
-      <NavigationContainer theme={DarkTheme}>
-        <AppNavigator />
-      </NavigationContainer>
-      <StatusBar style="light"></StatusBar>
-    </View>
+    <ReduxProvider>
+      <View style={styles.app} onLayout={hideSplashScreen}>
+        <NavigationContainer theme={DarkTheme}>
+          <AppNavigator />
+        </NavigationContainer>
+        <StatusBar style="light"></StatusBar>
+      </View>
+    </ReduxProvider>
   );
 }
 

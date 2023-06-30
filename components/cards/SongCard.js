@@ -1,10 +1,17 @@
 import { Image, StyleSheet, TouchableOpacity } from "react-native";
 import Text from "../Text";
 import colors from "../../config/colors";
+import { useDispatch } from "react-redux";
+import { toggleVisibility } from "../../store/Slices/playerVisibilitySlice";
 
 export default function SongCart({ data }) {
+  const dispatch = useDispatch();
+
   return (
-    <TouchableOpacity style={styles.container}>
+    <TouchableOpacity
+      onPress={() => dispatch(toggleVisibility())}
+      style={styles.container}
+    >
       <Image source={data.imageUri} style={styles.image}></Image>
       <Text style={styles.title}>{data.title}</Text>
       <Text style={styles.subTitle}>{data.subTitle}</Text>
