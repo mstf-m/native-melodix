@@ -155,18 +155,13 @@
 // export default MusicPlayer;
 
 import { useState, useEffect } from "react";
-import {
-  View,
-  StyleSheet,
-  Button,
-  Image,
-  TouchableOpacity,
-} from "react-native";
+import { View, StyleSheet, Image, TouchableOpacity } from "react-native";
 import Text from "../Text";
 import { Audio } from "expo-av";
 import { LinearGradient } from "expo-linear-gradient";
 import Icon from "../Icon";
 import colors from "../../config/colors";
+import { useSelector } from "react-redux";
 
 export default function MusicPlayer() {
   const [sound, setSound] = useState();
@@ -201,12 +196,14 @@ export default function MusicPlayer() {
       : undefined;
   }, [sound]);
 
-  return (
+  var isVisible = useSelector((state) => state.playerVisibility);
+
+  return isVisible ? (
     <LinearGradient
-      colors={["rgba(0, 255, 208, 0.4)", "rgba(126, 47, 255, 0.3)"]}
+      colors={["rgba(0, 255, 208, 0.15)", "rgba(126, 47, 255, 0.12)"]}
       start={[0, 0]}
       end={[1, 0]}
-      style={{ flex: 0.1 }}
+      style={styles.gradient}
     >
       <View style={styles.container}>
         <View style={styles.info}>
@@ -244,10 +241,16 @@ export default function MusicPlayer() {
         </View>
       </View>
     </LinearGradient>
-  );
+  ) : null;
 }
 
 const styles = StyleSheet.create({
+  gradient: {
+    flex: 0.1,
+    width: "100%",
+    position: "absolute",
+    bottom: 50,
+  },
   container: {
     flex: 1,
     flexDirection: "row",

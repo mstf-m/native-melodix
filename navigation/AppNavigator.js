@@ -23,8 +23,8 @@ const AppNavigator = () => (
       headerShown: false,
       tabBarIcon: ({ focused, color, size }) => {
         if (route.name === "HomeTab") {
-          // return <HomeSvg color={color}></HomeSvg>;
-          return <Ionicons name="home-sharp" size={20} color={color} />;
+          return <HomeSvg color={color}></HomeSvg>;
+          // return <Ionicons name="home-sharp" size={20} color={color} />;
         } else if (route.name === "BrowseTab") {
           return <PalaylistSvg color={color}></PalaylistSvg>;
         } else if (route.name === "TrendingTab") {

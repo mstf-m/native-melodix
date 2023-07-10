@@ -9,6 +9,7 @@ import colors from "./config/colors";
 import { StatusBar } from "expo-status-bar";
 import Theme from "./navigation/Theme";
 import { ReduxProvider } from "./store/provider";
+import MusicPlayer from "./components/music player/MusicPlayer";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -35,6 +36,7 @@ export default function App() {
           <AppNavigator />
         </NavigationContainer>
         <StatusBar style="light"></StatusBar>
+        <MusicPlayer />
       </View>
     </ReduxProvider>
   );

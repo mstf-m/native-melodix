@@ -2,8 +2,8 @@ import Svg, { Path } from "react-native-svg";
 const Search = ({ color, ...otherProps }) => (
   <Svg
     xmlns="http://www.w3.org/2000/svg"
-    width={16}
-    height={16}
+    width={22}
+    height={22}
     fill={color}
     className="bi bi-search"
     {...otherProps}
