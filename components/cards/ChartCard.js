@@ -4,12 +4,14 @@ import colors from "../../config/colors";
 import { useNavigation } from "@react-navigation/native";
 import routes from "../../navigation/routes";
 
-export default function ChartCard({ data }) {
+export default function ChartCard({ data, index }) {
   const navigation = useNavigation();
+
+  const isFirstCard = index === 0;
 
   return (
     <TouchableOpacity
-      style={styles.container}
+      style={[styles.container, isFirstCard && styles.firstCardMarginLeft]}
       onPress={() => navigation.navigate(routes.CHART)}
     >
       <View style={styles.group}>
@@ -32,6 +34,9 @@ const styles = StyleSheet.create({
     backgroundColor: colors.surface700,
     marginRight: 20,
     borderRadius: 20,
+  },
+  firstCardMarginLeft: {
+    marginLeft: 15,
   },
   group: {
     margin: 15,

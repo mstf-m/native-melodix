@@ -73,6 +73,6 @@ const styles = StyleSheet.create({
   },
   image: {
     ...StyleSheet.absoluteFillObject,
-    resizeMode: "contain",
+    resizeMode: "cover",
   },
 });

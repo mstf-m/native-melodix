@@ -163,6 +163,7 @@ import Icon from "../Icon";
 import colors from "../../config/colors";
 import { useSelector, useDispatch } from "react-redux";
 import { setMusicindex } from "../../store/Slices/playerVisibilitySlice";
+import { BlurView } from "expo-blur";
 
 export default function MusicPlayer() {
   const [Sound, setSound] = useState();
@@ -226,50 +227,52 @@ export default function MusicPlayer() {
 
   return isVisible ? (
     <LinearGradient
-      colors={["rgba(0, 255, 208, 0.7)", "rgba(126, 47, 255, 0.6)"]}
+      colors={["rgba(0, 255, 208, 0.15)", "rgba(126, 47, 255, 0.15)"]}
       start={[0, 0]}
       end={[1, 0]}
       style={styles.gradient}
     >
-      <View style={styles.container}>
-        <View style={styles.info}>
-          <Image
-            style={styles.image}
-            source={{ uri: ListData[index].featuredImage.node.mediaItemUrl }}
-          ></Image>
-          <View>
-            <Text style={styles.title} numberOfLines={1}>
-              {ListData[index].title}
-            </Text>
-            <Text style={styles.subTitle}>
-              {ListData[index].afmusicfields.musicArtistRelationship[0].title}
-            </Text>
+      <BlurView intensity={1} blurReductionFactor={0.5} tint="light">
+        <View style={styles.container}>
+          <View style={styles.info}>
+            <Image
+              style={styles.image}
+              source={{ uri: ListData[index].featuredImage.node.mediaItemUrl }}
+            ></Image>
+            <View>
+              <Text style={styles.title} numberOfLines={1}>
+                {ListData[index].title}
+              </Text>
+              <Text style={styles.subTitle}>
+                {ListData[index].afmusicfields.musicArtistRelationship[0].title}
+              </Text>
+            </View>
+          </View>
+          <View style={styles.iconContainer}>
+            <TouchableOpacity onPress={PreviousMusic}>
+              <Icon
+                name={"stepbackward"}
+                iconColor={colors.primary}
+                size={40}
+              ></Icon>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={isPlaying ? Pause : Play}>
+              <Icon
+                name={isPlaying ? "pausecircle" : "play"}
+                iconColor={colors.primary}
+                size={60}
+              ></Icon>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={NextMusic}>
+              <Icon
+                name={"stepforward"}
+                iconColor={colors.primary}
+                size={40}
+              ></Icon>
+            </TouchableOpacity>
           </View>
         </View>
-        <View style={styles.iconContainer}>
-          <TouchableOpacity onPress={PreviousMusic}>
-            <Icon
-              name={"stepbackward"}
-              iconColor={colors.primary}
-              size={40}
-            ></Icon>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={isPlaying ? Pause : Play}>
-            <Icon
-              name={isPlaying ? "pausecircle" : "play"}
-              iconColor={colors.primary}
-              size={60}
-            ></Icon>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={NextMusic}>
-            <Icon
-              name={"stepforward"}
-              iconColor={colors.primary}
-              size={40}
-            ></Icon>
-          </TouchableOpacity>
-        </View>
-      </View>
+      </BlurView>
     </LinearGradient>
   ) : null;
 }
@@ -280,6 +283,7 @@ const styles = StyleSheet.create({
     width: "100%",
     position: "absolute",
     bottom: 50,
+    zIndex: 10,
   },
   container: {
     flex: 1,

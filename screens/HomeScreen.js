@@ -101,8 +101,8 @@ export default function HomeScreen() {
             <MyCarousel></MyCarousel>
             <FeaturedList title={staticData.topCharts.title}>
               <>
-                {staticData.topCharts.items.map((item) => (
-                  <ChartCard key={item.id} data={item} />
+                {staticData.topCharts.items.map((item, index) => (
+                  <ChartCard key={item.id} data={item} index={index} />
                 ))}
               </>
             </FeaturedList>
