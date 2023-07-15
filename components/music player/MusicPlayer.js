@@ -161,46 +161,72 @@ import { Audio } from "expo-av";
 import { LinearGradient } from "expo-linear-gradient";
 import Icon from "../Icon";
 import colors from "../../config/colors";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { setMusicindex } from "../../store/Slices/playerVisibilitySlice";
 
 export default function MusicPlayer() {
-  const [sound, setSound] = useState();
+  const [Sound, setSound] = useState();
   const [isPlaying, setIsPlaying] = useState(false);
+
+  const dispatch = useDispatch();
+  var isVisible = useSelector((state) => state.playerVisibility.isVisible);
+  var ListData = useSelector((state) => state.playerVisibility.MusicList);
+  var index = useSelector((state) => state.playerVisibility.index);
 
   const onPlaybackStatusUpdate = (status) => {
     setIsPlaying(status.isPlaying);
   };
 
-  async function PlayPause() {
-    console.log("Loading Sound");
-    const { sound } = await Audio.Sound.createAsync(
-      require("../../assets/music.mp3")
-    );
+  const NextMusic = () => {
+    if (index == ListData.length - 1) {
+      dispatch(setMusicindex(0));
+    } else {
+      dispatch(setMusicindex(index + 1));
+    }
+    console.log(index);
+  };
+
+  const PreviousMusic = () => {
+    if (index == 0) {
+      dispatch(setMusicindex(ListData.length - 1));
+    } else {
+      dispatch(setMusicindex(index - 1));
+    }
+    console.log(index);
+  };
+
+  async function Pause() {
+    await Sound.pauseAsync();
+  }
+
+  async function Play() {
+    const { sound } = await Audio.Sound.createAsync({
+      uri: ListData[index].afmusicfields.track.mediaItemUrl,
+    });
+
     setSound(sound);
     sound.setOnPlaybackStatusUpdate(onPlaybackStatusUpdate);
 
-    console.log("Playing Sound");
-    if (isPlaying) {
-      await sound.pauseAsync();
-    } else {
-      await sound.playAsync();
-    }
+    console.log("playing");
+    await sound.playAsync();
   }
 
   useEffect(() => {
-    return sound
+    if (isVisible) Play();
+  }, [index]);
+
+  useEffect(() => {
+    return Sound
       ? () => {
           console.log("Unloading Sound");
-          sound.unloadAsync();
+          Sound.unloadAsync();
         }
       : undefined;
-  }, [sound]);
-
-  var isVisible = useSelector((state) => state.playerVisibility);
+  }, [Sound]);
 
   return isVisible ? (
     <LinearGradient
-      colors={["rgba(0, 255, 208, 0.15)", "rgba(126, 47, 255, 0.12)"]}
+      colors={["rgba(0, 255, 208, 0.7)", "rgba(126, 47, 255, 0.6)"]}
       start={[0, 0]}
       end={[1, 0]}
       style={styles.gradient}
@@ -209,29 +235,33 @@ export default function MusicPlayer() {
         <View style={styles.info}>
           <Image
             style={styles.image}
-            source={require("../../assets/images/img6.png")}
+            source={{ uri: ListData[index].featuredImage.node.mediaItemUrl }}
           ></Image>
           <View>
-            <Text style={styles.title}>You You</Text>
-            <Text style={styles.subTitle}>Mahdi Ali</Text>
+            <Text style={styles.title} numberOfLines={1}>
+              {ListData[index].title}
+            </Text>
+            <Text style={styles.subTitle}>
+              {ListData[index].afmusicfields.musicArtistRelationship[0].title}
+            </Text>
           </View>
         </View>
         <View style={styles.iconContainer}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={PreviousMusic}>
             <Icon
               name={"stepbackward"}
               iconColor={colors.primary}
               size={40}
             ></Icon>
           </TouchableOpacity>
-          <TouchableOpacity onPress={PlayPause}>
+          <TouchableOpacity onPress={isPlaying ? Pause : Play}>
             <Icon
               name={isPlaying ? "pausecircle" : "play"}
               iconColor={colors.primary}
               size={60}
             ></Icon>
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={NextMusic}>
             <Icon
               name={"stepforward"}
               iconColor={colors.primary}
@@ -269,12 +299,13 @@ const styles = StyleSheet.create({
   image: {
     width: 60,
     height: 60,
-    borderRadius: 40,
+    borderRadius: 10,
     marginRight: 10,
   },
   title: {
     fontSize: 18,
     fontWeight: "700",
+    width: 150,
   },
   subTitle: {
     fontSize: 14,

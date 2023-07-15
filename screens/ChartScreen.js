@@ -54,7 +54,7 @@ const data = {
 
 export default function ChartScreen() {
   return (
-    <Screen style={styles.screen}>
+    <Screen>
       <ScrollView showsVerticalScrollIndicator={false}>
         <BackgraoundGradient>
           <View style={styles.container}>
@@ -100,9 +100,6 @@ export default function ChartScreen() {
 }
 
 const styles = StyleSheet.create({
-  screen: {
-    marginHorizontal: 0,
-  },
   container: {
     marginHorizontal: 20,
   },

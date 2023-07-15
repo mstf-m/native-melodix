@@ -1,14 +1,25 @@
 import { createSlice, current } from "@reduxjs/toolkit";
 export const playerVisibilitySlice = createSlice({
   name: "playerVisibility",
-  initialState: false,
+  initialState: {
+    isVisible: false,
+    MusicList: [],
+    index: 0,
+  },
   reducers: {
     toggleVisibility: (state) => {
-      return (state = !state);
+      state.isVisible = true;
+    },
+    setMusicData: (state, action) => {
+      state.MusicList = action.payload;
+    },
+    setMusicindex: (state, action) => {
+      state.index = action.payload;
     },
   },
 });
 
-export const { toggleVisibility } = playerVisibilitySlice.actions;
+export const { toggleVisibility, setMusicData, setMusicindex } =
+  playerVisibilitySlice.actions;
 
 export default playerVisibilitySlice.reducer;

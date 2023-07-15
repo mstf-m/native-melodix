@@ -5,8 +5,13 @@ import MainLogo from "../assets/SVGs/MainLogo";
 import FeaturedList from "../components/FeaturedList";
 import ChartCard from "../components/cards/ChartCard";
 import SongCart from "../components/cards/SongCard";
+import Text from "../components/Text";
+import MyCarousel from "../components/Carousel";
 
-const data = {
+import MusicData from "../graphql/GetMusic";
+import { useQuery } from "@apollo/client";
+
+const staticData = {
   topCharts: {
     title: "Top Charts",
     items: [
@@ -37,44 +42,49 @@ const data = {
     ],
   },
 
-  newReleases: {
-    title: "New Releases",
-    items: [
-      {
-        id: 1,
-        imageUri: require("../assets/images/img2.png"),
-        title: "Life in a bubble",
-        subTitle: "The van",
-      },
-      {
-        id: 2,
-        imageUri: require("../assets/images/img3.png"),
-        title: "Life in a bubble",
-        subTitle: "The van",
-      },
-      {
-        id: 3,
-        imageUri: require("../assets/images/img4.png"),
-        title: "Life in a bubble",
-        subTitle: "The van",
-      },
-      {
-        id: 4,
-        imageUri: require("../assets/images/img5.png"),
-        title: "Life in a bubble",
-        subTitle: "The van",
-      },
-      {
-        id: 5,
-        imageUri: require("../assets/images/img6.png"),
-        title: "Life in a bubble",
-        subTitle: "The van",
-      },
-    ],
-  },
+  // newReleases: {
+  //   title: "New Releases",
+  //   items: [
+  //     {
+  //       id: 1,
+  //       imageUri: require("../assets/images/img2.png"),
+  //       title: "Life in a bubble",
+  //       subTitle: "The van",
+  //     },
+  //     {
+  //       id: 2,
+  //       imageUri: require("../assets/images/img3.png"),
+  //       title: "Life in a bubble",
+  //       subTitle: "The van",
+  //     },
+  //     {
+  //       id: 3,
+  //       imageUri: require("../assets/images/img4.png"),
+  //       title: "Life in a bubble",
+  //       subTitle: "The van",
+  //     },
+  //     {
+  //       id: 4,
+  //       imageUri: require("../assets/images/img5.png"),
+  //       title: "Life in a bubble",
+  //       subTitle: "The van",
+  //     },
+  //     {
+  //       id: 5,
+  //       imageUri: require("../assets/images/img6.png"),
+  //       title: "Life in a bubble",
+  //       subTitle: "The van",
+  //     },
+  //   ],
+  // },
 };
 
 export default function HomeScreen() {
+  const { loading, error, data } = useQuery(MusicData);
+
+  if (loading) return <Text>Loading...</Text>;
+  if (error) return <Text>Error : {error.message}</Text>;
+
   return (
     <Screen>
       <FlatList
@@ -84,21 +94,27 @@ export default function HomeScreen() {
         renderItem={() => (
           <>
             <MainLogo color={colors.primary} style={styles.logo}></MainLogo>
-            <Image
+            {/* <Image
               style={styles.mainPic}
               source={require("../assets/images/img1.png")}
-            ></Image>
-            <FeaturedList title={data.topCharts.title}>
+            ></Image> */}
+            <MyCarousel></MyCarousel>
+            <FeaturedList title={staticData.topCharts.title}>
               <>
-                {data.topCharts.items.map((item) => (
+                {staticData.topCharts.items.map((item) => (
                   <ChartCard key={item.id} data={item} />
                 ))}
               </>
             </FeaturedList>
-            <FeaturedList title={data.newReleases.title}>
+            <FeaturedList title={"New Releases"}>
               <>
-                {data.newReleases.items.map((item) => (
-                  <SongCart key={item.id} data={item} />
+                {data.musics.nodes.map((item, index) => (
+                  <SongCart
+                    key={item.afmusicfields.track.id}
+                    data={item}
+                    ListData={data.musics.nodes}
+                    index={index}
+                  />
                 ))}
               </>
             </FeaturedList>
@@ -112,6 +128,7 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   logo: {
     marginVertical: 15,
+    marginLeft: 15,
   },
   mainPic: {
     width: "100%",

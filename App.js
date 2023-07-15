@@ -10,12 +10,15 @@ import { StatusBar } from "expo-status-bar";
 import Theme from "./navigation/Theme";
 import { ReduxProvider } from "./store/provider";
 import MusicPlayer from "./components/music player/MusicPlayer";
+import { ApolloProvider } from "@apollo/client";
+import client from "./graphql/client";
 
 SplashScreen.preventAutoHideAsync();
 
 export default function App() {
   const [fontsLoaded] = useFonts({
     Quicksand: require("./assets/fonts/Quicksand/Quicksand-Regular.ttf"),
+    QuicksandBold: require("./assets/fonts/Quicksand/Quicksand-Bold.ttf"),
     Designer: require("./assets/fonts/DESIGNER/DESIGNER.otf"),
   });
 
@@ -30,15 +33,17 @@ export default function App() {
   }
 
   return (
-    <ReduxProvider>
-      <View style={styles.app} onLayout={hideSplashScreen}>
-        <NavigationContainer theme={DarkTheme}>
-          <AppNavigator />
-        </NavigationContainer>
-        <StatusBar style="light"></StatusBar>
-        <MusicPlayer />
-      </View>
-    </ReduxProvider>
+    <ApolloProvider client={client}>
+      <ReduxProvider>
+        <View style={styles.app} onLayout={hideSplashScreen}>
+          <NavigationContainer theme={DarkTheme}>
+            <AppNavigator />
+          </NavigationContainer>
+          <StatusBar style="light"></StatusBar>
+          <MusicPlayer />
+        </View>
+      </ReduxProvider>
+    </ApolloProvider>
   );
 }
 

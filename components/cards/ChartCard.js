@@ -15,11 +15,12 @@ export default function ChartCard({ data }) {
       <View style={styles.group}>
         <View>
           <Image source={data.imageUri} style={styles.image}></Image>
-          <Image></Image>
         </View>
-        <Text style={styles.title}>{data.title}</Text>
-        <Text style={styles.subTitle}>{data.subTitle}</Text>
-        <Text style={styles.duration}>{data.duration}</Text>
+        <View>
+          <Text style={styles.title}>{data.title}</Text>
+          <Text style={styles.subTitle}>{data.subTitle}</Text>
+          <Text style={styles.duration}>{data.duration}</Text>
+        </View>
       </View>
     </TouchableOpacity>
   );
@@ -34,6 +35,8 @@ const styles = StyleSheet.create({
   },
   group: {
     margin: 15,
+    flexDirection: "row", //change
+    gap: 20, //change
   },
   image: {
     width: 100,

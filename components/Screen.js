@@ -3,10 +3,10 @@ import Constants from "expo-constants";
 import { StyleSheet, SafeAreaView, View } from "react-native";
 import colors from "../config/colors";
 
-function Screen({ children, style }) {
+function Screen({ children, style1, style2 }) {
   return (
-    <SafeAreaView style={[styles.screen]}>
-      <View style={[styles.view, style]}>{children}</View>
+    <SafeAreaView style={[styles.screen, style1]}>
+      <View style={[styles.view, style2]}>{children}</View>
     </SafeAreaView>
   );
 }
@@ -19,7 +19,6 @@ const styles = StyleSheet.create({
   },
   view: {
     flex: 1,
-    marginHorizontal: 15,
   },
 });
 

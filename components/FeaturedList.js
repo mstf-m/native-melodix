@@ -2,9 +2,14 @@ import { ScrollView, StyleSheet, View } from "react-native";
 import Text from "./Text";
 import colors from "../config/colors";
 
-export default function FeaturedList({ title, isLoad = false, children }) {
+export default function FeaturedList({
+  title,
+  isLoad = false,
+  children,
+  style,
+}) {
   return (
-    <View style={[styles.container]}>
+    <View style={[styles.container, style]}>
       <Text style={styles.title}>{title}</Text>
       <ScrollView
         horizontal={true}
@@ -24,8 +29,9 @@ const styles = StyleSheet.create({
   },
   title: {
     marginBottom: 15,
-    fontWeight: "bold",
+    fontFamily: "QuicksandBold",
     fontSize: 20,
+    marginLeft: 15,
   },
   group: {},
   load: {

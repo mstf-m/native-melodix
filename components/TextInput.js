@@ -1,7 +1,6 @@
-import React from "react";
 import { View, TextInput, StyleSheet } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
-
+import colors from "../config/colors";
 import defaultStyles from "../config/styles";
 
 function AppTextInput({ icon, width, ...otherProps }) {
@@ -11,12 +10,12 @@ function AppTextInput({ icon, width, ...otherProps }) {
         <AntDesign
           name={icon}
           size={25}
-          color={defaultStyles.colors.medium}
+          color={colors.white}
           style={styles.icon}
         />
       )}
       <TextInput
-        placeholderTextColor={defaultStyles.colors.medium}
+        placeholderTextColor={colors.white}
         style={defaultStyles.text}
         {...otherProps}
       />
@@ -26,9 +25,9 @@ function AppTextInput({ icon, width, ...otherProps }) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: defaultStyles.colors.white,
-    borderRadius: 999,
-    borderColor: defaultStyles.colors.border,
+    backgroundColor: colors.grayDark,
+    borderRadius: 15,
+    borderColor: colors.primary,
     borderWidth: 1,
     flexDirection: "row",
     padding: 12,

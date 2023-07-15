@@ -18,4 +18,6 @@ export default {
   textLight: "#efeee0",
   backgroundMiniCard: "#1a1e1f",
   borderMiniCardCircle: "rgba(255, 255, 255, 0.11)",
+  grayDark: "#3D404B",
+  white: "#E5FFFD",
 };

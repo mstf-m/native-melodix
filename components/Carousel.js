@@ -1,36 +1,23 @@
-import React, { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect } from "react";
 import Carousel, { ParallaxImage } from "react-native-snap-carousel";
 import { View, Dimensions, StyleSheet, Platform } from "react-native";
 
-const ENTRIES1 = [
-  {
-    illustration:
-      "https://dkstatics-public.digikala.com/digikala-adservice-banners/bad6f72fc55d6b73830ea2e4e933d090c8022f7b_1684909188.jpg?x-oss-process=image/quality,q_95/format,webp",
-  },
-  {
-    illustration:
-      "https://dkstatics-public.digikala.com/digikala-adservice-banners/283c552e485df2e567a09ceac4a2b1443e141c88_1684926127.jpg?x-oss-process=image/quality,q_95/format,webp",
-  },
-  {
-    illustration:
-      "https://dkstatics-public.digikala.com/digikala-adservice-banners/d49179fa3475f6d27a91e43e8e46e09e191bf2a1_1667980460.jpg?x-oss-process=image/quality,q_95/format,webp",
-  },
-  {
-    illustration:
-      "https://dkstatics-public.digikala.com/digikala-adservice-banners/8e00ff9276973d09fefb81d814b9a88bf7de9d4d_1677323290.jpg?x-oss-process=image/quality,q_95/format,webp",
-  },
-  {
-    illustration:
-      "https://dkstatics-public.digikala.com/digikala-adservice-banners/0aa91809f34e862a6cb5ed46eca4bb4d434088d0_1665866601.jpg?x-oss-process=image/quality,q_95",
-  },
-];
+import MusicData from "../graphql/GetMusic";
+import { useQuery } from "@apollo/client";
+
 const { width: screenWidth } = Dimensions.get("window");
 
 const MyCarousel = (props) => {
   const [entries, setEntries] = useState([]);
   const carouselRef = useRef(null);
+  const { loading, error, data } = useQuery(MusicData);
 
   useEffect(() => {
+    const ENTRIES1 = data.musics.nodes.map((node) => {
+      return {
+        illustration: node.featuredImage.node.mediaItemUrl,
+      };
+    });
     setEntries(ENTRIES1);
   }, []);
 
@@ -86,6 +73,6 @@ const styles = StyleSheet.create({
   },
   image: {
     ...StyleSheet.absoluteFillObject,
-    resizeMode: "cover",
+    resizeMode: "contain",
   },
 });
