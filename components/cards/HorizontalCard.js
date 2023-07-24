@@ -9,10 +9,7 @@ export default function HorizontalCard({ data }) {
   const dispatch = useDispatch();
 
   return (
-    <TouchableOpacity
-      onPress={() => dispatch(toggleVisibility())}
-      style={styles.container}
-    >
+    <TouchableOpacity onPress={() => {}} style={styles.container}>
       <Image source={data.imageUri} style={styles.image}></Image>
       <View style={styles.details}>
         <View style={styles.titleBox}>

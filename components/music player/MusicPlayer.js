@@ -173,6 +173,7 @@ export default function MusicPlayer() {
   var isVisible = useSelector((state) => state.playerVisibility.isVisible);
   var ListData = useSelector((state) => state.playerVisibility.MusicList);
   var index = useSelector((state) => state.playerVisibility.index);
+  const opacity = useSelector((state) => state.playerVisibility.opacity);
 
   const onPlaybackStatusUpdate = (status) => {
     setIsPlaying(status.isPlaying);
@@ -201,6 +202,7 @@ export default function MusicPlayer() {
   }
 
   async function Play() {
+    console.log(opacity);
     const { sound } = await Audio.Sound.createAsync({
       uri: ListData[index].afmusicfields.track.mediaItemUrl,
     });
@@ -227,12 +229,12 @@ export default function MusicPlayer() {
 
   return isVisible ? (
     <LinearGradient
-      colors={["rgba(0, 255, 208, 0.15)", "rgba(126, 47, 255, 0.15)"]}
+      colors={["rgba(0, 255, 208, 0.2)", "rgba(126, 47, 255, 0.2)"]}
       start={[0, 0]}
       end={[1, 0]}
-      style={styles.gradient}
+      style={[styles.gradient, { opacity: opacity }]}
     >
-      <BlurView intensity={1} blurReductionFactor={0.5} tint="light">
+      <BlurView intensity={6} blurReductionFactor={0.5} tint="light">
         <View style={styles.container}>
           <View style={styles.info}>
             <Image
@@ -252,21 +254,21 @@ export default function MusicPlayer() {
             <TouchableOpacity onPress={PreviousMusic}>
               <Icon
                 name={"stepbackward"}
-                iconColor={colors.primary}
+                iconColor={colors.white}
                 size={40}
               ></Icon>
             </TouchableOpacity>
             <TouchableOpacity onPress={isPlaying ? Pause : Play}>
               <Icon
                 name={isPlaying ? "pausecircle" : "play"}
-                iconColor={colors.primary}
+                iconColor={colors.white}
                 size={60}
               ></Icon>
             </TouchableOpacity>
             <TouchableOpacity onPress={NextMusic}>
               <Icon
                 name={"stepforward"}
-                iconColor={colors.primary}
+                iconColor={colors.white}
                 size={40}
               ></Icon>
             </TouchableOpacity>

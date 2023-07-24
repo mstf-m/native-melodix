@@ -7,9 +7,12 @@ import ChartCard from "../components/cards/ChartCard";
 import SongCart from "../components/cards/SongCard";
 import Text from "../components/Text";
 import MyCarousel from "../components/Carousel";
+import Button from "../components/Button";
 
 import MusicData from "../graphql/GetMusic";
 import { useQuery } from "@apollo/client";
+import { NetworkStatus } from "@apollo/client";
+import ActivityIndicator from "../components/ActivityIndicator";
 
 const staticData = {
   topCharts: {
@@ -80,10 +83,23 @@ const staticData = {
 };
 
 export default function HomeScreen() {
-  const { loading, error, data } = useQuery(MusicData);
+  const { loading, error, data, refetch, networkStatus } = useQuery(MusicData, {
+    notifyOnNetworkStatusChange: true,
+  });
 
-  if (loading) return <Text>Loading...</Text>;
-  if (error) return <Text>Error : {error.message}</Text>;
+  if (loading || networkStatus === NetworkStatus.refetch)
+    return <ActivityIndicator />;
+  if (error) {
+    console.log(error);
+    return (
+      <View style={styles.errorContainer}>
+        <Text>Error : {error.message}</Text>
+        <Button style={styles.retry} onPress={() => refetch()}>
+          <Text style={styles.retryText}>Retry</Text>
+        </Button>
+      </View>
+    );
+  }
 
   return (
     <Screen>
@@ -94,10 +110,7 @@ export default function HomeScreen() {
         renderItem={() => (
           <>
             <MainLogo color={colors.primary} style={styles.logo}></MainLogo>
-            {/* <Image
-              style={styles.mainPic}
-              source={require("../assets/images/img1.png")}
-            ></Image> */}
+
             <MyCarousel></MyCarousel>
             <FeaturedList title={staticData.topCharts.title}>
               <>
@@ -126,12 +139,21 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
+  errorContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 30,
+  },
+  retry: {
+    marginTop: 20,
+    paddingHorizontal: 20,
+  },
+  retryText: {
+    color: colors.background,
+  },
   logo: {
     marginVertical: 15,
     marginLeft: 15,
-  },
-  mainPic: {
-    width: "100%",
-    borderRadius: 20,
   },
 });

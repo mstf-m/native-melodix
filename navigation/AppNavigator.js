@@ -19,6 +19,7 @@ const Tab = createBottomTabNavigator();
 const AppNavigator = () => (
   <Tab.Navigator
     screenOptions={({ route }) => ({
+      tabBarHideOnKeyboard: true,
       tabBarShowLabel: false,
       headerShown: false,
       tabBarIcon: ({ focused, color, size }) => {
@@ -30,11 +31,11 @@ const AppNavigator = () => (
         } else if (route.name === "TrendingTab") {
           return <DiscSvg color={color}></DiscSvg>;
         } else if (route.name === "SearchTab") {
-          // return <SearchSvg color={color}></SearchSvg>;
-          return <Ionicons name="md-search" size={20} color={color} />;
+          return <SearchSvg color={color}></SearchSvg>;
+          // return <Ionicons name="md-search" size={20} color={color} />;
         } else if (route.name === "ProfileTab") {
-          // return <ProfileSvg color={color}></ProfileSvg>;
-          return <Ionicons name="person" size={20} color={color} />;
+          return <ProfileSvg color={color}></ProfileSvg>;
+          // return <Ionicons name="person" size={20} color={color} />;
         }
       },
       tabBarActiveTintColor: colors.primary,

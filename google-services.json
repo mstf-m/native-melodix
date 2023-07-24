@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "88628668171",
+    "project_id": "melodix-241d4",
+    "storage_bucket": "melodix-241d4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:88628668171:android:ec8adbd0f5ccbac9eda40e",
+        "android_client_info": {
+          "package_name": "com.mstf_m.nativemelodix"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "88628668171-68ct0oa7lfq84pj0gc8gg6aqgvhil3c2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mstf_m.nativemelodix",
+            "certificate_hash": "e878b7a86bfb73f704df5851234fc305d88d7a06"
+          }
+        },
+        {
+          "client_id": "88628668171-09ttc6mldjk0lhdl83om0bobahv9dgd0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCT0VzbLxVs35q2tb-4YXYnIYkEidoa54A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "88628668171-09ttc6mldjk0lhdl83om0bobahv9dgd0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

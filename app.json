@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "native-melodix",
+    "name": "Melodix",
     "slug": "native-melodix",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -18,9 +18,10 @@
       "supportsTablet": true
     },
     "android": {
+      "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "foregroundImage": "./assets/icon.png",
+        "backgroundColor": "#1d2123"
       },
       "package": "com.mstf_m.nativemelodix"
     },
@@ -31,6 +32,10 @@
       "eas": {
         "projectId": "186a3df1-86f2-467e-9497-cf3a87c670dc"
       }
-    }
+    },
+    "plugins": [
+			"./plugin/android-manifest-plugin.js",
+      "@react-native-google-signin/google-signin"
+		]
   }
 }

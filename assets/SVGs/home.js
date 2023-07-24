@@ -2,8 +2,8 @@ import Svg, { Path } from "react-native-svg";
 const Home = ({ color, ...otherProps }) => (
   <Svg
     xmlns="http://www.w3.org/2000/svg"
-    width={22}
-    height={22}
+    width={24}
+    height={24}
     fill="none"
     {...otherProps}
   >

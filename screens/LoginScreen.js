@@ -1,35 +1,63 @@
-import { ImageBackground, StyleSheet, View } from "react-native";
+import {
+  ImageBackground,
+  StyleSheet,
+  View,
+  TouchableWithoutFeedback,
+  Keyboard,
+  ScrollView,
+  Image,
+} from "react-native";
+
 import Text from "../components/Text";
-import TextInput from "../components/TextInput";
 import Screen from "../components/Screen";
 import MainLogo from "../assets/SVGs/MainLogo";
 import { LinearGradient } from "expo-linear-gradient";
+import LoginForm from "../components/forms/LoginForm";
 
 export default function LoginScreen() {
+  // const emailRef = useRef(null);
+  // const passRef = useRef(null);
+
+  // const handleScreenPress = () => {
+  //   if (emailRef.current) {
+  //     emailRef.current.blur();
+  //   }
+  //   if (passRef.current) {
+  //     passRef.current.blur();
+  //   }
+  // };
+
   return (
     <Screen style1={styles.screen}>
-      <LinearGradient
-        colors={["#010101", "#544171"]}
-        start={[0, 0]}
-        end={[0, 1]}
-        style={styles.gradient}
-      >
-        <ImageBackground
-          source={require("../assets/images/falling-girl.png")}
-          style={styles.image}
-        >
-          <View style={styles.brand}>
-            <MainLogo></MainLogo>
-            <Text style={styles.name}>melodix</Text>
+      <ScrollView>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View style={styles.container}>
+            <LinearGradient
+              colors={["#010101", "#544171"]}
+              start={[0, 0]}
+              end={[0, 1]}
+              style={styles.gradient}
+            >
+              <Image
+                source={require("../assets/images/falling-girl.png")}
+                style={styles.image}
+              ></Image>
+              <ImageBackground
+                source={require("../assets/images/black-layer.png")}
+                style={styles.backgroundImage}
+              >
+                <View style={styles.details}>
+                  <View style={styles.brand}>
+                    <MainLogo></MainLogo>
+                    <Text style={styles.name}>melodix</Text>
+                  </View>
+                  <LoginForm></LoginForm>
+                </View>
+              </ImageBackground>
+            </LinearGradient>
           </View>
-          <View style={styles.form}>
-            <TextInput icon={"profile"}></TextInput>
-            <TextInput icon={"profile"}></TextInput>
-            <TextInput icon={"profile"}></TextInput>
-            <TextInput icon={"profile"}></TextInput>
-          </View>
-        </ImageBackground>
-      </LinearGradient>
+        </TouchableWithoutFeedback>
+      </ScrollView>
     </Screen>
   );
 }
@@ -38,12 +66,22 @@ const styles = StyleSheet.create({
   screen: {
     backgroundColor: "#010101",
   },
+  container: {
+    flex: 1,
+    height: 800,
+  },
+  backgroundImage: {
+    height: "100%",
+    position: "absolute",
+  },
   image: {
-    flex: 0.4,
+    width: "100%",
+    height: 300,
   },
   gradient: {
     flex: 1,
   },
+  // details: {position: "absolute",},
   brand: {
     flexDirection: "row",
     alignItems: "center",
@@ -54,8 +92,5 @@ const styles = StyleSheet.create({
   name: {
     fontFamily: "QuicksandBold",
     fontSize: 24,
-  },
-  form: {
-    marginTop: "50%",
   },
 });
