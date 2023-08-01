@@ -1,7 +1,6 @@
 import { LinearGradient } from "expo-linear-gradient";
 import MaskedView from "@react-native-masked-view/masked-view";
 import Text from "../components/Text";
-import colors from "../config/colors";
 
 const GradientText = ({
   colors = ["rgb(0, 255, 208)", "rgba(126, 47, 255, 0.8)"],

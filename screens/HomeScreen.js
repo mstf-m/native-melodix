@@ -45,6 +45,31 @@ const staticData = {
     ],
   },
 
+  musics: {
+    nodes: [
+      {
+        title: "ja dare",
+        afmusicfields: {
+          musicArtistRelationship: [
+            {
+              id: "123",
+              title: "javad",
+            },
+          ],
+          track: {
+            id: "456",
+            mediaItemUrl: require("../assets/madahi.mp3"),
+          },
+        },
+        featuredImage: {
+          node: {
+            mediaItemUrl: require("../assets/profilePic.jpg"),
+          },
+        },
+      },
+    ],
+  },
+
   // newReleases: {
   //   title: "New Releases",
   //   items: [
@@ -83,23 +108,23 @@ const staticData = {
 };
 
 export default function HomeScreen() {
-  const { loading, error, data, refetch, networkStatus } = useQuery(MusicData, {
-    notifyOnNetworkStatusChange: true,
-  });
+  // const { loading, error, data, refetch, networkStatus } = useQuery(MusicData, {
+  //   notifyOnNetworkStatusChange: true,
+  // });
 
-  if (loading || networkStatus === NetworkStatus.refetch)
-    return <ActivityIndicator />;
-  if (error) {
-    console.log(error);
-    return (
-      <View style={styles.errorContainer}>
-        <Text>Error : {error.message}</Text>
-        <Button style={styles.retry} onPress={() => refetch()}>
-          <Text style={styles.retryText}>Retry</Text>
-        </Button>
-      </View>
-    );
-  }
+  // if (loading || networkStatus === NetworkStatus.refetch)
+  //   return <ActivityIndicator />;
+  // if (error) {
+  //   console.log(error);
+  //   return (
+  //     <View style={styles.errorContainer}>
+  //       <Text>Error : {error.message}</Text>
+  //       <Button style={styles.retry} onPress={() => refetch()}>
+  //         <Text style={styles.retryText}>Retry</Text>
+  //       </Button>
+  //     </View>
+  //   );
+  // }
 
   return (
     <Screen>
@@ -121,11 +146,11 @@ export default function HomeScreen() {
             </FeaturedList>
             <FeaturedList title={"New Releases"}>
               <>
-                {data.musics.nodes.map((item, index) => (
+                {staticData.musics.nodes.map((item, index) => (
                   <SongCart
                     key={item.afmusicfields.track.id}
                     data={item}
-                    ListData={data.musics.nodes}
+                    ListData={staticData.musics.nodes}
                     index={index}
                   />
                 ))}

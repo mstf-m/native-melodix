@@ -23,7 +23,7 @@ export default function SongCart({ data, ListData, index }) {
       style={[styles.container, isFirstCard && styles.firstCardMarginLeft]}
     >
       <Image
-        source={{ uri: data.featuredImage.node.mediaItemUrl }}
+        source={data.featuredImage.node.mediaItemUrl} // server needs change
         style={styles.image}
       ></Image>
       <Text style={styles.title} numberOfLines={1}>

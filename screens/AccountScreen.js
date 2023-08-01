@@ -8,12 +8,6 @@ import SeparatorLine from "../components/SeparatorLine";
 import AcountSection from "../components/AcountSection";
 import useAuth from "../auth/useAuth";
 
-const profile = {
-  imageUrl: require("../assets/profilePic.jpg"),
-  profileName: "Mahdi Ali",
-  email: "Mahde@Ali.com",
-};
-
 const sections = [
   {
     title: "General",
@@ -29,7 +23,7 @@ const sections = [
   },
 ];
 
-export default function CategoryScreen() {
+export default function AccountScreen() {
   const { user, logOut } = useAuth();
 
   return (
@@ -42,8 +36,8 @@ export default function CategoryScreen() {
         </View>
       </View>
       <SeparatorLine></SeparatorLine>
-      {sections.map((item) => (
-        <AcountSection data={item}></AcountSection>
+      {sections.map((item, index) => (
+        <AcountSection data={item} key={index}></AcountSection>
       ))}
       <Button onPress={() => logOut()} style={{ margin: 20 }}>
         <Text style={{ color: colors.background }}>logout</Text>

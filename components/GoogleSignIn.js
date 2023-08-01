@@ -26,7 +26,6 @@ const GoogleSignIn = () => {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
       auth.logIn(userInfo);
-      console.log("User Info:", auth.user.idToken);
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         console.log("User cancelled the sign-in flow.");

@@ -2,22 +2,22 @@ import "expo-dev-client";
 
 import { View, StyleSheet } from "react-native";
 import { NavigationContainer, DarkTheme } from "@react-navigation/native";
-import { useCallback, useState } from "react";
+import { useCallback, useState, useEffect } from "react";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
+import { StatusBar } from "expo-status-bar";
+import { ReduxProvider } from "./store/provider";
+import { ApolloProvider } from "@apollo/client";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { AppLoading } from "expo-app-loading";
+
 import AppNavigator from "./navigation/AppNavigator";
 import colors from "./config/colors";
-import { StatusBar } from "expo-status-bar";
 import Theme from "./navigation/Theme";
-import { ReduxProvider } from "./store/provider";
-import MusicPlayer from "./components/music player/MusicPlayer";
-import { ApolloProvider } from "@apollo/client";
 import apollo from "./graphql/apollo";
-
-import { AppLoading } from "expo-app-loading";
 import AuthContext from "./auth/context";
 import authStorage from "./auth/storage";
-import { useEffect } from "react";
+import MusicPlayer from "./components/music player/MusicPlayer";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -60,11 +60,14 @@ export default function App() {
       <AuthContext.Provider value={{ user, setUser }}>
         <ReduxProvider>
           <View style={styles.app} onLayout={hideSplashScreen}>
-            <NavigationContainer theme={DarkTheme}>
-              <AppNavigator />
-            </NavigationContainer>
-            <StatusBar style="light"></StatusBar>
-            <MusicPlayer />
+            <GestureHandlerRootView style={styles.gesture}>
+              <NavigationContainer theme={DarkTheme}>
+                <AppNavigator />
+              </NavigationContainer>
+              <StatusBar style="light"></StatusBar>
+
+              <MusicPlayer />
+            </GestureHandlerRootView>
           </View>
         </ReduxProvider>
       </AuthContext.Provider>
@@ -76,5 +79,8 @@ const styles = StyleSheet.create({
   app: {
     flex: 1,
     backgroundColor: colors.background,
+  },
+  gesture: {
+    flex: 1,
   },
 });
