@@ -10,7 +10,7 @@ import { Audio, InterruptionModeAndroid, InterruptionModeIOS } from "expo-av";
 import { LinearGradient } from "expo-linear-gradient";
 import { useSelector, useDispatch } from "react-redux";
 import { BlurView } from "expo-blur";
-import { setMusicindex } from "../../store/Slices/playerVisibilitySlice";
+import { setMusicindex ,noneVisibility } from "../../store/Slices/playerVisibilitySlice";
 import Slider from "@react-native-community/slider";
 import Animated, {
   useSharedValue,
@@ -21,11 +21,14 @@ import Animated, {
 import { GestureDetector, Gesture } from "react-native-gesture-handler";
 
 import colors from "../../config/colors";
-import Icon from "../Icon";
 import Text from "../Text";
 import ActivityIndicator from "../ActivityIndicator";
+import Play from "../../assets/SVGs/Play";
+import Pause from "../../assets/SVGs/Pause";
+import Forward from "../../assets/SVGs/Forward";
+import Back from "../../assets/SVGs/Back";
 
-const { height: screenHeight } = Dimensions.get("window");
+const { height: screenHeight, width: screenWidth } = Dimensions.get("window");
 const LOOPING_TYPE_ALL = 0;
 const LOOPING_TYPE_ONE = 1;
 const RATE_SCALE = 3.0;
@@ -33,127 +36,12 @@ const LOADING_STRING = "... loading ...";
 const BUFFERING_STRING = "...buffering...";
 
 export default function MusicPlayer() {
-  const [isLarge, setIsLarge] = useState(false);
-
-  const offset = useSharedValue({
-    y: screenHeight - 80,
-    h: 80,
-    imageY: 0,
-    imageX: 0,
-    imageWidth: 60,
-    imageHeight: 60,
-  });
-  const start = useSharedValue({
-    y: screenHeight - 80,
-    h: 80,
-    imageY: 0,
-    imageX: 0,
-    imageWidth: 60,
-    imageHeight: 60,
-  });
-
-  const containerAnimatedStyles = useAnimatedStyle(() => {
-    return {
-      height: withSpring(offset.value.h, { mass: 0.03 }),
-      transform: [
-        {
-          translateY: withSpring(offset.value.y, { mass: 0.03 }),
-        },
-      ],
-    };
-  });
-
-  const imageAnimatedStyles = useAnimatedStyle(() => {
-    return {
-      width: withSpring(offset.value.imageWidth, { mass: 0.03 }),
-      height: withSpring(offset.value.imageHeight, { mass: 0.03 }),
-      // transform: [
-      //   {
-      //     translateX: withSpring(offset.value.imageX, { mass: 0.03 }),
-      //   },
-      //   {
-      //     translateY: withSpring(offset.value.imageY, { mass: 0.03 }),
-      //   },
-      // ],
-    };
-  });
-
-  const toggleIsLarge = () =>
-    offset.value.y === 0 ? setIsLarge(true) : setIsLarge(false);
-
-  const gesture = Gesture.Pan()
-    // .onBegin(() => {
-    //   isPressed.value = true;
-    // })
-    .onUpdate((e) => {
-      offset.value = {
-        y: e.translationY + start.value.y,
-        h: -e.translationY + start.value.h,
-        imageHeight: -e.translationY + start.value.imageHeight,
-        imageWidth: -e.translationY + start.value.imageWidth,
-        // imageX: 0,
-        // imageY: start.value.imageY,
-      };
-    })
-    .onEnd(() => {
-      if (start.value.y === screenHeight - 80) {
-        offset.value.y < 750
-          ? (offset.value = {
-              y: 0,
-              h: screenHeight + 200,
-              imageHeight: 360,
-              imageWidth: 360,
-              imageY: 0,
-              imageX: 0,
-            })
-          : (offset.value = {
-              y: screenHeight - 80,
-              h: 80,
-              imageHeight: 60,
-              imageWidth: 60,
-              imageY: 0,
-              imageX: 0,
-            });
-      } else if (start.value.y === 0) {
-        offset.value.y < 10
-          ? (offset.value = {
-              y: 0,
-              h: screenHeight + 200,
-              imageHeight: 360,
-              imageWidth: 360,
-              imageY: 0,
-              imageX: 0,
-            })
-          : (offset.value = {
-              y: screenHeight - 80,
-              h: 80,
-              imageHeight: 60,
-              imageWidth: 60,
-              imageY: 0,
-              imageX: 0,
-            });
-      }
-
-      start.value = {
-        y: offset.value.y,
-        h: offset.value.h,
-        imageHeight: 60,
-        imageWidth: 60,
-        imageX: 10,
-        imageY: screenHeight - 70,
-      };
-    })
-    .onFinalize(() => {
-      runOnJS(toggleIsLarge)();
-    });
-
-  ///////////////////////////////////////////////////// Up for Animation ///////////////////////////////////////////////////////////
 
   const [Sound, setSound] = useState();
 
   const [playbackInstanceName, setPlaybackInstanceName] =
     useState(LOADING_STRING);
-  const [loopingType, setLoopingType] = useState(0);
+  const [loopingType, setLoopingType] = useState(LOOPING_TYPE_ALL);
   const [muted, setMuted] = useState(false);
   const [position, setPosition] = useState(null);
   const [duration, setDuration] = useState(null);
@@ -189,13 +77,27 @@ export default function MusicPlayer() {
     if (isVisible) _loadNewPlaybackInstance(shouldPlay);
   }, [isVisible]);
 
+  // useEffect(() => {
+  //   return Sound
+  //     ? () => {
+  //         console.log("Unloading Sound");
+  //         Sound.unloadAsync();
+  //         Sound.setOnPlaybackStatusUpdate(null);
+  //         setSound(null);
+  //       }
+  //     : undefined;
+  // }, [Sound]);
+
   const _loadNewPlaybackInstance = async (playing) => {
     if (Sound != null) {
       await Sound.unloadAsync();
+      Sound.setOnPlaybackStatusUpdate(null);
       setSound(null);
     }
 
-    const source = ListData[index].afmusicfields.track.mediaItemUrl; // server needs change
+    console.log(index);
+
+    const source = { uri: ListData[index].track }; // server needs change
     const initialStatus = {
       shouldPlay: playing,
       rate,
@@ -224,7 +126,7 @@ export default function MusicPlayer() {
       setIsLoading(true);
     } else {
       setPlaybackInstanceName(
-        ListData[index].afmusicfields.musicArtistRelationship[0].title
+        ListData[index].title
       ); // ????
       setIsLoading(false);
     }
@@ -254,19 +156,11 @@ export default function MusicPlayer() {
   };
 
   const _advanceIndex = (forward) => {
-    if (forward) {
-      if (index == ListData.length - 1) {
-        dispatch(setMusicindex(0));
-      } else {
-        dispatch(setMusicindex(index + 1));
-      }
-    } else {
-      if (index == 0) {
-        dispatch(setMusicindex(ListData.length - 1));
-      } else {
-        dispatch(setMusicindex(index - 1));
-      }
-    }
+    dispatch(
+      setMusicindex(
+        (index + (forward ? 1 : ListData.length - 1)) % ListData.length
+      )
+    );
   };
 
   const _updatePlaybackInstanceForIndex = (playing) => {
@@ -363,7 +257,6 @@ export default function MusicPlayer() {
   const _getSeekSliderPosition = () => {
     if (Sound != null && position != null && duration != null) {
       return position / duration;
-      console.log("first");
     }
     return 0;
   };
@@ -456,10 +349,143 @@ export default function MusicPlayer() {
   //     : undefined;
   // }, [Sound]);
 
+
+ ///////////////////////////////////////////////////// Below for Animation ///////////////////////////////////////////////////////////
+
+  const [isLarge, setIsLarge] = useState(false);
+
+  const offset = useSharedValue({
+    y: screenHeight - 80,
+    x: 0,
+    h: 80,
+    opacity: 1,
+  });
+  const start = useSharedValue({
+    y: screenHeight - 80,
+    h: 80,
+  });
+
+  const playerAnimatedStyles = useAnimatedStyle(() => {
+    return {
+      height: withSpring(offset.value.h, { mass: 0.3 }),
+      transform: [
+        {
+          translateY: withSpring(offset.value.y, { mass: 0.3 }),
+        },
+        {
+          translateX: withSpring(offset.value.x, { mass: 0.3 })
+        }
+      ],
+    };
+  });
+
+  const containerAnimatedStyles = useAnimatedStyle(() => {
+    return {
+      opacity: offset.value.opacity,
+    };
+  });
+
+  const toggleIsLarge = () =>
+    offset.value.y === 0 ? setIsLarge(true) : setIsLarge(false);
+
+    const deleteMusic = async () =>{
+      if (Sound != null) {
+        await Sound.unloadAsync();
+        Sound.setOnPlaybackStatusUpdate(null);
+        setSound(null);
+      }
+      // console.log(isVisible);
+      dispatch(noneVisibility());
+      console.log(isVisible);
+    }
+
+  const dragGesture = Gesture.Pan().minDistance(20)
+    .onUpdate((e) => {
+      offset.value = {
+        x:0,
+        y: e.translationY + start.value.y,
+        h: -e.translationY + start.value.h,
+        opacity:
+          start.value.y === 0
+            ? 1 - e.translationY / 300
+            : 1 + e.translationY / 300,
+      };
+    })
+    .onEnd(() => {
+      if (start.value.y === screenHeight - 80) {
+        offset.value.y < 700
+          ? (offset.value = {
+              x:0,
+              y: 0,
+              h: screenHeight + 200,
+              opacity:1
+            })
+          : (offset.value = {
+              x:0,
+              y: screenHeight - 80,
+              h: 80,
+              opacity:1
+            });
+      } else if (start.value.y === 0) {
+        offset.value.y < 10
+          ? (offset.value = {
+              x:0,
+              y: 0,
+              h: screenHeight + 200,
+              opacity:1
+            })
+          : (offset.value = {
+              x:0,
+              y: screenHeight - 80,
+              h: 80,
+              opacity:1
+            });
+      }
+
+      start.value = {
+        y: offset.value.y,
+        h: offset.value.h,
+      };
+    })
+    .onFinalize(() => {
+      runOnJS(toggleIsLarge)();
+    });
+
+
+    const deleteGesture = Gesture.Pan().activeOffsetX(5)
+    .onUpdate((e) => {
+      console.log(e.absoluteX)
+      offset.value = {
+        x: e.translationX,
+        y: screenHeight - 80,
+        h: 80,
+        opacity:  50 / Math.abs(e.translationX)
+      };
+    })
+    .onEnd(() => {
+        offset.value.x < screenWidth/3
+          ? (offset.value = {
+              x: 0, 
+              y: screenHeight - 80,
+              h: 80,
+              opacity: 1,
+            })
+          : ((offset.value = {
+            x: screenWidth +100, 
+            y: screenHeight - 80,
+            h: 80,
+            opacity: 1,
+          }),
+          runOnJS(deleteMusic)()
+          );
+    })
+
+    const composed = Gesture.Race(dragGesture, deleteGesture);
+
   return isVisible ? (
     <>
-      <GestureDetector gesture={gesture}>
-        <Animated.View style={[styles.ball, containerAnimatedStyles]}>
+      <Animated.View style={[styles.ball, playerAnimatedStyles]}>
+        <GestureDetector gesture={composed}>
           <BlurView
             intensity={6}
             blurReductionFactor={0.5}
@@ -472,79 +498,82 @@ export default function MusicPlayer() {
               end={[1, 0]}
               style={[styles.gradient, { opacity: opacity }]}
             >
-              <View style={isLarge ? styles.LargeContainer : styles.container}>
+              <Animated.View
+                style={[
+                  isLarge ? styles.LargeContainer : styles.container,
+                  containerAnimatedStyles,
+                ]}
+              >
                 <View style={isLarge ? styles.infoVertical : styles.info}>
-                  <Animated.Image
-                    style={[styles.image, imageAnimatedStyles]}
-                    source={ListData[index].featuredImage.node.mediaItemUrl} // server needs change
-                  ></Animated.Image>
-                  <View>
+                  <Image
+                    style={isLarge ? styles.largeImage : styles.image}
+                    source={{
+                      uri: ListData[index].cover,
+                    }} // server needs change
+                  ></Image>
+                  <View style={isLarge ? styles.textContainer : null}>
                     <Text style={styles.title} numberOfLines={1}>
                       {ListData[index].title}
                     </Text>
                     <Text style={styles.subTitle}>
                       {
-                        ListData[index].afmusicfields.musicArtistRelationship[0]
-                          .title
+                        ListData[index].title
                       }
                     </Text>
                   </View>
                 </View>
 
-                <View style={styles.iconContainer}>
+                <View
+                  style={
+                    isLarge ? styles.largeIconContainer : styles.iconContainer
+                  }
+                >
                   <TouchableOpacity onPress={_onBackPressed}>
-                    <Icon
-                      name={"stepbackward"}
-                      iconColor={colors.white}
-                      size={40}
-                    ></Icon>
+                    <View style={styles.svgBox}>
+                      <Back />
+                    </View>
                   </TouchableOpacity>
                   {isLoading ? (
                     <View style={styles.animation}>
-                      <ActivityIndicator isLarge={false} />
+                      <ActivityIndicator isLarge={isLarge ? true : false} />
                     </View>
                   ) : (
                     <TouchableOpacity
                       onPress={_onPlayPausePressed}
                       disabled={isLoading}
                     >
-                      <Icon
-                        name={isPlaying ? "pausecircle" : "play"}
-                        iconColor={colors.white}
-                        size={60}
-                      ></Icon>
+                      {isPlaying ? <Pause /> : <Play />}
                     </TouchableOpacity>
                   )}
                   <TouchableOpacity onPress={_onForwardPressed}>
-                    <Icon
-                      name={"stepforward"}
-                      iconColor={colors.white}
-                      size={40}
-                    ></Icon>
+                    <View style={styles.svgBox}>
+                      <Forward />
+                    </View>
                   </TouchableOpacity>
                 </View>
-              </View>
+              </Animated.View>
             </LinearGradient>
           </BlurView>
-        </Animated.View>
-      </GestureDetector>
-      {isLarge ? (
-        <Slider
-          style={{
-            bottom: 270,
-            marginHorizontal: 16,
-            height: 40,
-            alignSelf: "stretch",
-          }}
-          value={_getSeekSliderPosition()}
-          onValueChange={_onSeekSliderSlidingComplete}
-          onSlidingComplete={_onSeekSliderSlidingComplete}
-          disabled={isLoading}
-          thumbTintColor="#000"
-          minimumTrackTintColor="#000"
-          maximumTrackTintColor="#999"
-        />
-      ) : null}
+        </GestureDetector>
+
+        {isLarge ? (
+          <Animated.View
+            style={[styles.sliderContainer, containerAnimatedStyles]}
+          >
+            <Text style={styles.timeStamp}>{_getTimestamp()}</Text>
+            <Slider
+              style={styles.soundSlider}
+              value={_getSeekSliderPosition()}
+              onValueChange={_onSeekSliderSlidingComplete}
+              onSlidingComplete={_onSeekSliderSlidingComplete}
+              disabled={isLoading}
+              thumbTintColor={colors.primary}
+              minimumTrackTintColor={colors.primary}
+              maximumTrackTintColor="rgba(255, 255, 255, 1)"
+            />
+          </Animated.View>
+        ) : null}
+      </Animated.View>
     </>
   ) : null;
 }
@@ -576,32 +605,68 @@ const styles = StyleSheet.create({
   info: {
     flexDirection: "row",
     alignItems: "center",
+    gap: 10,
   },
   infoVertical: {
     flexDirection: "column",
     alignItems: "center",
+    justifyContent: "center",
     marginTop: screenHeight * 0.1,
+  },
+  textContainer: {
+    alignItems: "center",
+    marginTop: 16,
   },
   iconContainer: {
     flexDirection: "row",
     alignItems: "center",
+    gap: 8,
+    marginRight: 10,
+  },
+  largeIconContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: screenHeight * 0.15,
+    gap: screenWidth * 0.08,
   },
   image: {
-    // width: 60,
-    // height: 60,
+    width: 60,
+    height: 60,
     borderRadius: 10,
-    marginRight: 10,
+  },
+  largeImage: {
+    width: screenWidth * 0.88,
+    height: screenWidth * 0.88,
+    borderRadius: 10,
   },
   title: {
     fontSize: 18,
     fontWeight: "700",
-    width: 150,
+    // width: 150,
   },
   subTitle: {
     fontSize: 14,
   },
   animation: {
     marginHorizontal: 30,
+  },
+  svgBox: {
+    width: 40,
+    height: 40,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  sliderContainer: {
+    position: "absolute",
+    top: screenHeight * 0.84,
+    width: screenWidth * 0.85,
+    height: 40,
+    alignSelf: "center",
+  },
+  timeStamp: {
+    alignSelf: "flex-end",
+    fontSize: 12,
+    marginRight: 15,
   },
   // fixedElement: {
   //   height: 100,

@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from "react";
 import { StyleSheet, View } from "react-native";
 import LottieView from "lottie-react-native";
 
-export default function App({ isLarge = true, size = 50 }) {
+export default function Splash({ isLarge = true, size = 50 }) {
   const animation = useRef(null);
   useEffect(() => {
     // You can control the ref programmatically, rather than using autoPlay
@@ -15,18 +15,18 @@ export default function App({ isLarge = true, size = 50 }) {
         autoSize={false}
         autoPlay
         ref={animation}
-        style={
-          isLarge
-            ? {
-                width: 200,
-                height: 200,
-              }
-            : {
-                width: { size },
-                height: { size },
-              }
-        }
-        source={require("../assets/animations/loader.json")}
+        // style={
+        //   isLarge
+        //     ? {
+        //         width: 200,
+        //         height: 200,
+        //       }
+        //     : {
+        //         width: { size },
+        //         height: { size },
+        //       }
+        // }
+        source={require("../assets/animations/melodix.json")}
       />
     </View>
   );

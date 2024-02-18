@@ -44,7 +44,7 @@ const AppNavigator = () => (
   >
     <Tab.Screen name="HomeTab" component={HomeNavigator} />
     <Tab.Screen name="BrowseTab" component={BrowseNavigator} />
-    <Tab.Screen name="TrendingTab" component={TrendingNavigator} />
+    {/* <Tab.Screen name="TrendingTab" component={TrendingNavigator} /> */}
     <Tab.Screen name="SearchTab" component={SearchNavigator} />
     <Tab.Screen name="ProfileTab" component={ProfileNavigator} />
   </Tab.Navigator>

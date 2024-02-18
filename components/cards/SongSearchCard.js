@@ -1,4 +1,4 @@
-import { Image, StyleSheet, TouchableOpacity } from "react-native";
+import { Image, StyleSheet, TouchableOpacity, Dimensions } from "react-native";
 import Text from "../Text";
 import colors from "../../config/colors";
 import { useDispatch } from "react-redux";
@@ -8,10 +8,10 @@ import {
   setMusicindex,
 } from "../../store/Slices/playerVisibilitySlice";
 
-export default function SongCart({ data, ListData, index }) {
-  const dispatch = useDispatch();
+const { width: screenWidth } = Dimensions.get("window");
 
-  const isFirstCard = index === 0;
+export default function SongSearchCard({ data, ListData, index }) {
+  const dispatch = useDispatch();
 
   return (
     <TouchableOpacity
@@ -20,7 +20,7 @@ export default function SongCart({ data, ListData, index }) {
         dispatch(setMusicData(ListData));
         dispatch(setMusicindex(index));
       }}
-      style={[styles.container, isFirstCard && styles.firstCardMarginLeft]}
+      style={[styles.container]}
     >
       <Image
         source={{ uri: data.cover }} // server needs change
@@ -29,26 +29,21 @@ export default function SongCart({ data, ListData, index }) {
       <Text style={styles.title} numberOfLines={1}>
         {data.title}
       </Text>
-      <Text style={styles.subTitle}>
-        {data.title}
-      </Text>
+      <Text style={styles.subTitle}>{data.title}</Text>
     </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    marginRight: 20,
-    width: 150,
+    marginRight: 15,
+    width: screenWidth / 3 - 25,
     overflow: "hidden",
-  },
-  firstCardMarginLeft: {
-    marginLeft: 15,
   },
   image: {
     marginBottom: 10,
-    width: 150,
-    height: 150,
+    width: screenWidth / 3 - 25,
+    height: screenWidth / 3 - 25,
     borderRadius: 15,
   },
   title: {

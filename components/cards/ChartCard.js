@@ -16,7 +16,7 @@ export default function ChartCard({ data, index }) {
     >
       <View style={styles.group}>
         <View>
-          <Image source={data.imageUri} style={styles.image}></Image>
+          <Image source={{ uri: data.imageUri }} style={styles.image}></Image>
         </View>
         <View>
           <Text style={styles.title}>{data.title}</Text>

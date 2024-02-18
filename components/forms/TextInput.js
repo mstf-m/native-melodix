@@ -17,12 +17,12 @@ import {
   opacityZero,
 } from "../../store/Slices/playerVisibilitySlice";
 
-function AppTextInput({ icon, placeholder, width, haveEye, ...otherProps }) {
+function AppTextInput({ icon, placeholder, width, haveEye, secure=false, ...otherProps }) {
   const offsetX = useSharedValue(43);
   const offsetY = useSharedValue(42);
 
   const [isFocused, setIsFocused] = useState(false);
-  const [isSecure, setIsSecure] = useState(true);
+  const [isSecure, setIsSecure] = useState(secure);
 
   const dispatch = useDispatch();
 

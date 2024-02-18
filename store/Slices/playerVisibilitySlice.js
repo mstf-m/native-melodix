@@ -11,6 +11,9 @@ export const playerVisibilitySlice = createSlice({
     toggleVisibility: (state) => {
       state.isVisible = true;
     },
+    noneVisibility: (state) => {
+      state.isVisible = false;
+    },
     opacityFull: (state) => {
       state.opacity = 1;
     },
@@ -28,6 +31,7 @@ export const playerVisibilitySlice = createSlice({
 
 export const {
   toggleVisibility,
+  noneVisibility,
   setMusicData,
   setMusicindex,
   opacityFull,

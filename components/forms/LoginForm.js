@@ -74,6 +74,7 @@ export default function LoginForm() {
             textContentType="password"
             onChangeText={handleChange("password")}
             onBlur={() => setFieldTouched("password")}
+            secure
             haveEye
           ></TextInput>
           <ErrorMessage error={errors.password} visible={touched.password} />

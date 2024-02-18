@@ -179,11 +179,11 @@
 //   }
 
 //   async _loadNewPlaybackInstance(playing) {
-//     if (this.playbackInstance != null) {
-//       await this.playbackInstance.unloadAsync();
-//       // this.playbackInstance.setOnPlaybackStatusUpdate(null);
-//       this.playbackInstance = null;
-//     }
+// if (this.playbackInstance != null) {
+//   await this.playbackInstance.unloadAsync();
+//   // this.playbackInstance.setOnPlaybackStatusUpdate(null);
+//   this.playbackInstance = null;
+// }
 
 //     const source = { uri: PLAYLIST[this.index].uri };
 //     const initialStatus = {

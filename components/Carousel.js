@@ -1,6 +1,7 @@
 import { useRef, useState, useEffect } from "react";
 import Carousel, { ParallaxImage } from "react-native-snap-carousel";
 import { View, Dimensions, StyleSheet, Platform } from "react-native";
+import axios from "axios";
 
 import MusicData from "../graphql/GetMusic";
 import { useQuery } from "@apollo/client";
@@ -20,17 +21,31 @@ const MyCarousel = (props) => {
     // });
     // setEntries(ENTRIES1);
 
-    setEntries([
-      {
-        illustration: `https://loremflickr.com/400/300?lock=1`,
-      },
-      {
-        illustration: `https://loremflickr.com/400/300?lock=2`,
-      },
-      {
-        illustration: `https://loremflickr.com/400/300?lock=3`,
-      },
-    ]);
+    const coverArray = [];
+
+    axios
+      .get("http://melodixapi.afarineshweb.ir/api/music?per_page=10")
+      .then(function (response) {
+        response.data.music.data.map((element, i) => {
+          coverArray.push(element.cover);
+        });
+
+        setEntries([
+          {
+            illustration: coverArray[0],
+          },
+          {
+            illustration: coverArray[1],
+          },
+          {
+            illustration: coverArray[2],
+          },
+        ]);
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error);
+      });
   }, []);
 
   const renderItem = ({ item, index }, parallaxProps) => {
@@ -69,8 +84,9 @@ const MyCarousel = (props) => {
         hasParallaxImages={true}
         autoplay={true}
         autoplayInterval={5000}
-        loop={false}
-        onSnapToItem={handleLoop}
+        loop={true}
+        // useScrollView={true}
+        // loopClonesPerSide={5}
       />
     </View>
   );
@@ -80,6 +96,7 @@ export default MyCarousel;
 
 const styles = StyleSheet.create({
   container: {
+    marginTop: 25,
     marginBottom: 15,
   },
   item: {
@@ -95,7 +112,7 @@ const styles = StyleSheet.create({
   },
   image: {
     ...StyleSheet.absoluteFillObject,
-    resizeMode: "cover",
+    resizeMode: "contain",
   },
 });
 
